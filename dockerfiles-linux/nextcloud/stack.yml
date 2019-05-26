@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - type: volume
+        source: datavol
+        target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: f]BmgecQ_kun
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  adminer:
+    image: adminer
+    ports:
+      - 5000:8080
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  nextcloud:
+    image: nextcloud
+    ports:
+      - 8081:80
+    deploy:
+      mode: replicated
+      replicas: 1
+
+volumes:
+  datavol:
+    external: true

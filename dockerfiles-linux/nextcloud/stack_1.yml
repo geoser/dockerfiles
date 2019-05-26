@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - type: volume
+        source: dbvol
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    environment:
+      MYSQL_ROOT_PASSWORD: f]BmgecQ_kun
+      MYSQL_PASSWORD: f]BmgecQ_kun
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  adminer:
+    image: adminer
+    ports:
+      - 5000:8080
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  nextcloud:
+    image: nextcloud
+    ports:
+      - 8081:80
+    volumes:
+      - type: volume
+        source: ncvol
+        target: /var/www/html/
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: f]BmgecQ_kun
+      MYSQL_HOST: db
+      NEXTCLOUD_ADMIN_USER: sergepav
+      NEXTCLOUD_ADMIN_PASSWORD: A0o5[pnn
+    deploy:
+      mode: replicated
+      replicas: 1
+
+volumes:
+  dbvol:
+    driver: cloudstor:azure
+  ncvol:
+    driver: cloudstor:azure
