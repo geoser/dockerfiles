@@ -13,7 +13,7 @@ LABEL maintainer="Sergei Pavliukovich"
 
 RUN apt-get update && apt-get install -y smbclient && apt-get install -y cron
 
-COPY --from=converter cronentrypoint.sh /cronentrypoint.sh
+COPY --from=converter /cronentrypoint.sh /cronentrypoint.sh
 
 ENTRYPOINT [ "/cronentrypoint.sh" ]
 
